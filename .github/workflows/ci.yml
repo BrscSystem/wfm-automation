@@ -1,11 +1,31 @@
-stages:
-  - lint
+name: Lint
 
-lint_process:
-    stage: lint
-    image: python:3.12
-    script:
-        - pip install flake8==7.0.0 black==24.3.0 isort==5.13.2
-        - black . --check
-        - isort . --check
-        - flake8 . --count
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  lint_process:
+    name: Lint Process
+    runs-on: ubuntu-latest
+
+    container:
+      image: python:3.12
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Instalar dependências de lint
+        run: pip install flake8==7.0.0 black==24.3.0 isort==5.13.2
+
+      - name: Rodar black
+        run: black . --check
+
+      - name: Rodar isort
+        run: isort . --check
+
+      - name: Rodar flake8
+        run: flake8 . --count
