@@ -8,6 +8,7 @@ if platform.system() == "Windows":
     LOCAL_APPDATA = os.getenv("LOCALAPPDATA")
     APPDATA = os.path.join(LOCAL_APPDATA, "iTeam WFM Automation")
 else:
+    # Diretório oculto no home do usuário em Linux/macOS
     APPDATA = os.path.join(os.path.expanduser("~"), ".iteam_wfm_automation")
 
 PICKLE_FOLDER = os.path.join(APPDATA, "pickle")
@@ -20,14 +21,8 @@ STATIC_PATH = (
 )
 
 LOGO_PATH = os.path.join(STATIC_PATH, "img", "logo.png")
-
 ICO_PATH = os.path.join(STATIC_PATH, "img", "logo.ico")
 
-
-# Check if pickle folder exists
-if not os.path.exists(PICKLE_FOLDER):
-    os.mkdir(PICKLE_FOLDER)
-
-# Check if WebDriverCache folder exists
-if not os.path.exists(WEB_DRIVER_CACHE_FOLDER):
-    os.mkdir(WEB_DRIVER_CACHE_FOLDER)
+# Criação segura de diretórios
+os.makedirs(PICKLE_FOLDER, exist_ok=True)
+os.makedirs(WEB_DRIVER_CACHE_FOLDER, exist_ok=True)
