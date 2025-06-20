@@ -9,7 +9,7 @@ from config import STATIC_PATH
 
 def notify(title, message):
     if platform.system() != "Windows":
-        print(f"[NOTIFY] {title}: {message}")  # ou logue em arquivo
+        print(f"[NOTIFY] {title}: {message}")
         return
 
     icon_path = os.path.abspath(os.path.join(STATIC_PATH, "img", "logo.png"))
