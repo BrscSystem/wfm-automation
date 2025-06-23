@@ -143,7 +143,7 @@ class DataManager:
             os.path.join(
                 f"{WEB_DRIVER_CACHE_FOLDER}/.wdm/drivers",
                 "**",
-                "msedgedriver.exe",
+                "msedgedriver",
             ),
             recursive=True,
         )
@@ -152,19 +152,19 @@ class DataManager:
             os.path.join(
                 f"{WEB_DRIVER_CACHE_FOLDER}/.wdm/drivers",
                 "**",
-                "chromedriver.exe",
+                "chromedriver",
             ),
             recursive=True,
         )
 
         if not (edge_driver_files or chrome_driver_files):
             edge_driver_files = glob.glob(
-                os.path.join(f"{STATIC_PATH}/drivers", "msedgedriver.exe"),
+                os.path.join(f"{STATIC_PATH}/drivers", "msedgedriver"),
                 recursive=True,
             )
 
             chrome_driver_files = glob.glob(
-                os.path.join(f"{STATIC_PATH}/drivers", "chromedriver.exe"),
+                os.path.join(f"{STATIC_PATH}/drivers", "chromedriver"),
                 recursive=True,
             )
 
