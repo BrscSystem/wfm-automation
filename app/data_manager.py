@@ -64,9 +64,15 @@ class DataManager:
 
     def start_chrome_browser(self):
         self.options = webdriver.ChromeOptions()
+        self.options.binary_location = "/usr/bin/chromium"
         self.options.add_argument("--headless")
         self.options.add_argument("--no-sandbox")
         self.options.add_argument("--disable-dev-shm-usage")
+
+        self.browser = webdriver.Chrome(
+            service=ChromeService("/usr/bin/chromedriver"),
+            options=self.options,
+        )
 
         for attempt in range(5):
             try:
