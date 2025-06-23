@@ -1,6 +1,6 @@
 import os
-import sys
 import platform
+import sys
 
 BASEDIR = os.path.dirname(os.path.abspath("main.py"))
 

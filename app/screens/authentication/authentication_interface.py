@@ -1,7 +1,8 @@
+import time
+
 from app.screens.authentication.authentication_automation import (
     AuthenticationAutomation,
 )
-import time
 
 
 class AuthenticationInterface:

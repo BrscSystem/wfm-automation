@@ -1,7 +1,9 @@
 import glob
 import os
+import platform
 import time
 
+import urllib3
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.options import Options
@@ -41,16 +43,22 @@ class DataManager:
         self._password = password
 
     def start_browser(self):
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         os.environ["WDM_SSL_VERIFY"] = "0"
 
         self.options.add_argument("--headless")
-
         self.find_driver_in_cache()
 
-        try:
-            self.start_edge_browser()
-        except Exception:
+        system = platform.system()
+
+        if system == "Linux":
             self.start_chrome_browser()
+        else:
+            try:
+                self.start_edge_browser()
+            except Exception as e:
+                print(f"Edge falhou: {e}")
+                self.start_chrome_browser()
 
         self.access_the_netcare_website()
 
@@ -105,6 +113,7 @@ class DataManager:
 
             except Exception as e:
                 if self.edge_driver:
+                    os.chmod(self.edge_driver, 0o755)
                     self.browser = webdriver.Edge(
                         service=EdgeService(self.edge_driver),
                         options=self.options,
