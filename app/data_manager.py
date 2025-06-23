@@ -63,38 +63,33 @@ class DataManager:
         self.access_the_netcare_website()
 
     def start_chrome_browser(self):
+        self.options = webdriver.ChromeOptions()
+        self.options.add_argument("--headless")
+        self.options.add_argument("--no-sandbox")
+        self.options.add_argument("--disable-dev-shm-usage")
+
         for attempt in range(5):
             try:
-                self.options = webdriver.ChromeOptions()
+                driver_path = ChromeDriverManager(
+                    cache_manager=self.cache_manager
+                ).install()
+
+                if platform.system() == "Linux":
+                    os.chmod(driver_path, 0o755)
+
                 self.browser = webdriver.Chrome(
-                    service=ChromeService(
-                        ChromeDriverManager(
-                            cache_manager=self.cache_manager
-                        ).install()
-                    ),
+                    service=ChromeService(driver_path),
                     options=self.options,
                 )
                 print("-------- Webdriver (Chrome) - OK --------")
                 break
 
             except Exception as e:
-                if self.chrome_driver:
-                    self.browser = webdriver.Chrome(
-                        service=ChromeService(self.chrome_driver),
-                        options=self.options,
-                    )
-                    print(
-                        "-------- Webdriver (Chrome) from cache - OK  --------"
-                    )
-                    break
-
                 print(
                     f"Attempt {attempt + 1} to launch Chrome browser failed: {e}"
                 )
                 if attempt == 4:
-                    print(
-                        "Unable to initialize Chrome after multiple attempts."
-                    )
+                    print("Unable to initialize Chrome after multiple attempts.")
                 time.sleep(2)
 
     def start_edge_browser(self):
