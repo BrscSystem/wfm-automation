@@ -75,7 +75,10 @@ class DataManager:
         self.options.add_argument(f"--user-data-dir=/tmp/chrome_user_data_{uuid.uuid4()}")
 
         self.browser = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager().install()),
+            service=ChromeService(ChromeDriverManager(
+                driver_version="137.0.7151.119",
+                cache_manager=self.cache_manager
+            ).install()),
             options=self.options
         )
 
