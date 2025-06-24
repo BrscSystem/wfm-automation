@@ -1,10 +1,8 @@
-# Imagem base leve com Python
+# Dockerfile atualizado
 FROM python:3.12-slim
 
-# Instala dependências do sistema e Chromium
 RUN apt-get update && apt-get install -y \
     chromium \
-    chromium-driver \
     fonts-liberation \
     libnss3 \
     libatk-bridge2.0-0 \
@@ -25,19 +23,11 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Define caminhos padrão
 ENV CHROME_BIN=/usr/bin/chromium
-ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
-# Define diretório de trabalho
 WORKDIR /app
 COPY . /app
 
-# Instala dependências Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Verifica presença dos binários (debug de build)
-RUN which chromium && which chromedriver
-
-# Comando de entrada
 CMD ["python", "main.py"]
