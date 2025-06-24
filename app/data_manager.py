@@ -95,7 +95,9 @@ class DataManager:
                     f"Attempt {attempt + 1} to launch Chrome browser failed: {e}"
                 )
                 if attempt == 4:
-                    print("Unable to initialize Chrome after multiple attempts.")
+                    print(
+                        "Unable to initialize Chrome after multiple attempts."
+                    )
                 time.sleep(2)
 
     def start_edge_browser(self):
