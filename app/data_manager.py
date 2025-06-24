@@ -72,14 +72,11 @@ class DataManager:
         self.options.add_argument("--disable-dev-shm-usage")
         self.options.add_argument("--disable-gpu")
         self.options.add_argument("--remote-debugging-port=9222")
-        self.options.add_argument(f"--user-data-dir=/tmp/chrome_user_data_{uuid.uuid4()}")
+        self.options.add_argument("--user-data-dir=/tmp/chrome_user_data")
 
         self.browser = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager(
-                driver_version="137.0.7151.119",
-                cache_manager=self.cache_manager
-            ).install()),
-            options=self.options
+            service=ChromeService("/usr/bin/chromedriver"),
+            options=self.options,
         )
 
         for attempt in range(5):
