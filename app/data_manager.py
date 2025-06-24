@@ -2,6 +2,7 @@ import glob
 import os
 import platform
 import time
+import uuid
 
 import urllib3
 from selenium import webdriver
@@ -68,6 +69,9 @@ class DataManager:
         self.options.add_argument("--headless")
         self.options.add_argument("--no-sandbox")
         self.options.add_argument("--disable-dev-shm-usage")
+        self.options.add_argument(
+            f"--user-data-dir=/tmp/chrome_user_data_{uuid.uuid4()}"
+        )
 
         self.browser = webdriver.Chrome(
             service=ChromeService("/usr/bin/chromedriver"),

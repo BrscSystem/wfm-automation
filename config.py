@@ -8,7 +8,7 @@ if platform.system() == "Windows":
     LOCAL_APPDATA = os.getenv("LOCALAPPDATA")
     APPDATA = os.path.join(LOCAL_APPDATA, "iTeam WFM Automation")
 else:
-    # Diretório oculto no home do usuário em Linux/macOS
+    # Hidden directory in user home on Linux/macOS
     APPDATA = os.path.join(os.path.expanduser("~"), ".iteam_wfm_automation")
 
 PICKLE_FOLDER = os.path.join(APPDATA, "pickle")
