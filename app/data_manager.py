@@ -64,17 +64,20 @@ class DataManager:
         self.access_the_netcare_website()
 
     def start_chrome_browser(self):
+
         self.options = webdriver.ChromeOptions()
-        self.options.binary_location = "/usr/bin/chromium"
-        self.options.add_argument("--headless")
+        self.options.binary_location = os.environ.get("CHROME_BIN", "/usr/bin/chromium")
+
+        self.options.add_argument("--headless=new")
         self.options.add_argument("--no-sandbox")
         self.options.add_argument("--disable-dev-shm-usage")
-        self.options.add_argument(
-            f"--user-data-dir=/tmp/chrome_user_data_{uuid.uuid4()}"
-        )
+        self.options.add_argument("--disable-gpu")
+        self.options.add_argument("--disable-software-rasterizer")
+        self.options.add_argument("--remote-debugging-port=9222")
+        self.options.add_argument(f"--user-data-dir=/tmp/chrome_user_data_{uuid.uuid4()}")
 
         self.browser = webdriver.Chrome(
-            service=ChromeService("/usr/bin/chromedriver"),
+            service=ChromeService(os.environ.get("CHROMEDRIVER_PATH", "/usr/bin/chromedriver")),
             options=self.options,
         )
 
