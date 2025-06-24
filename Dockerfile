@@ -23,14 +23,24 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.119/linux64/chromedriver-linux64.zip && \
-    unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
-    mv /usr/local/bin/chromedriver-linux64/chromedriver /usr/bin/chromedriver && \
-    chmod +x /usr/bin/chromedriver && \
-    rm -rf /tmp/chromedriver.zip /usr/local/bin/chromedriver-linux64
+# Check Chromium v137 version
+RUN chromium --version
 
+# Download matching ChromeDriver v137
+RUN CHROME_VERSION=$(chromium --version | grep -oP "\d+\.\d+\.\d+\.\d+" | head -1) && \
+    echo "Using Chromium version: $CHROME_VERSION" && \
+    CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" | \
+        jq -r --arg ver "$CHROME_VERSION" '.channels.Stable.version') && \
+    echo "Installing ChromeDriver version: $CHROMEDRIVER_VERSION" && \
+    wget -O chromedriver.zip "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip" && \
+    unzip chromedriver.zip && \
+    mv chromedriver-linux64/chromedriver /usr/bin/chromedriver && \
+    chmod +x /usr/bin/chromedriver && \
+    rm -rf chromedriver.zip chromedriver-linux64
+
+# Set environment variables
 ENV CHROME_BIN=/usr/bin/chromium
-ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+ENV PATH=$PATH:/usr/bin
 
 WORKDIR /app
 COPY . /app
