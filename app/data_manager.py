@@ -82,7 +82,8 @@ class DataManager:
         for attempt in range(5):
             try:
                 driver_path = ChromeDriverManager(
-                    cache_manager=self.cache_manager
+                    cache_manager=self.cache_manager,
+                    driver_version="137.0.7151.119"
                 ).install()
 
                 if platform.system() == "Linux":
